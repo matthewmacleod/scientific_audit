@@ -72,6 +72,8 @@ Observed results: both geometry-direction ProofAudit fixtures PASS, and the OAI 
 
 ## Background
 
+[Wikipedia](https://en.wikipedia.org/wiki/Mutually_unbiased_bases)
+
 What is a mutually unbiased basis?  Take two orthonormal bases of $\mathbb C^d$
 
 
