@@ -82,20 +82,25 @@ C=\{f_1,\dots,f_d\}.
 $$
 
 They are mutually unbiased if
+
 $$
 |\langle e_i,f_j\rangle|^2=\frac1d
 $$
+
 for every $(i,j)$.
 
 Operationally, if a quantum state is known perfectly in basis $(B)$, then measuring it in basis $(C)$ gives a completely uniform distribution. The two measurements reveal maximally complementary information.
 
 Wootters and Fields showed in 1989 that there can be at most
+
 $$
 d+1
 $$
+
 pairwise mutually unbiased bases, and that this maximum is achieved whenever $(d)$ is a prime power.
 
 So:
+
 $$
 d=2\Rightarrow3,
 \qquad
@@ -105,12 +110,15 @@ d=4\Rightarrow5,
 \qquad
 d=5\Rightarrow6,
 $$
+
 and so on.
 
 Then comes:
+
 $$
 \boxed{d=6}
 $$
+
 which is not a prime power.
 
 That is the first mysterious case.
@@ -120,6 +128,7 @@ For $\mathbb C^6$, the general upper bound gives
 $$
 N(6)\le7.
 $$
+
 Three mutually unbiased bases are known to exist.
 
 But for decades nobody could construct four.  Gerhard Zauner conjectured, originally in work going back to his 1991 master's thesis and his 1999 dissertation, that four MUBs in dimension six do not exist:
