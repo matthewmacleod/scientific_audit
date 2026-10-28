@@ -226,9 +226,11 @@ semanteq v1.4.0  git f927670  2026-10-27T22:35:59Z
 
 
 This is our first clean negative SemantEq result:
+
 $$
 \boxed{\texttt{LikelyTooWeak}}
 $$
+
 rather than EquivalentRestricted.
 
 
@@ -247,20 +249,25 @@ simp only [Nat.le_succ_iff]
 `Nat.le_succ_iff` is itself an iff-grade rewrite, so it fits SemantEq's permitted transformation vocabulary. SemantEq explicitly allows logical rearrangement, equality/iff rewriting, changes of variables, and structural weakening, while refusing arbitrary theorem proving as evidence of semantic equivalence. GitHub
 
 So it effectively transformed:
+
 $$
 n\le3
 $$
 
 into the corresponding finite disjunctive structure and then structurally weakened that to:
+
 $$
 n\le5.
 $$
+
 That is not being treated as equivalence. It is being recognized as a legitimate one-way weakening.
 
 That's exactly why the final classification is:
+
 $$
 \boxed{\text{candidate was classified LikelyTooWeak}}
 $$
+
 rather than 'these mean the same thing.' And the reverse result is almost prettier
 ```
 cand ⇒ ref: not proved
@@ -268,13 +275,17 @@ cand ⇒ ref: not proved
 ```
 
 So SemantEq tried 87 restricted transformation routes from
+
 $$
 n\le5
 $$
+
 to
+
 $$
 n\le3
 $$
+
 and found none.
 
 Important epistemic caveat: LikelyTooWeak is deliberately called likely, because SemantEq's search is incomplete. Failure to find the reverse transformation isn't a theorem that no such transformation exists. Its verdict table explicitly distinguishes these directional diagnoses from machine-proven bidirectional equivalence.
@@ -287,6 +298,7 @@ $$
 \text{SemantEq-Eval classified }(\le5)\text{ as LikelyTooWeak relative to }(\le3).
 }
 $$
+
 It did not certify bidirectional restricted equivalence.
 
 We have not yet run SemantEq directly over OpenAI's actual project theorem because of the Lean/Mathlib-version mismatch. OpenAI's own scope note is what establishes that its Lean artifact proves the ≤5 bound rather than the ≤3 headline; our experiment tests the semantic consequence of that documented mismatch.
