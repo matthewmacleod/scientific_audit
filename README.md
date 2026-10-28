@@ -25,7 +25,7 @@ maintained trusted Lean formulation from `leanprover/lean-eval`.
 Both quantify over arbitrary subsets, so this isolates the geometric representation
 choice. The bridge shifts the base point by `ω/2`.
 
-Run both directions (see [INSTALL.md](./INSTALL.md):
+Run both directions (see [INSTALL.md](./INSTALL.md)):
 ```
 lake exe semanteq --strict --proof oai_to_standard.lean standard_to_oai.lean
 ```
