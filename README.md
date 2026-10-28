@@ -68,7 +68,7 @@ in the SemantEq environment before interpreting the ProofAudit verdicts.
 
 Observed results: both geometry-direction ProofAudit fixtures PASS, and the OAI \(n=3\) → trusted compact Wang–Zahl fixture PASS. All runs used SemantEq v1.4.0, git f927670, in strict mode.
 
-## MUB (Mutually unbiased basis) and Result 266
+## MUB (Mutually unbiased bases) and Result 266
 
 ## Background
 
