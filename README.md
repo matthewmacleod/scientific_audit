@@ -143,19 +143,86 @@ His later English translation explicitly describes the dimension-six constructio
 
 
 ## Experiment
-The associated Lean formalization does not prove $N(6)=3$ OpenAI's own Lean scope documentation says this explicitly.  The manuscript claims:
+
+
+OpenAI's manuscript claims:
+
+$$
+N(6)=3,
+$$
+
+with the novel upper-bound component:
 
 $$
 N(6)\le3.
-$$ 
-
-The associated MUB Lean result proves only:
-
-$$
-\boxed{N(6)\le5}
 $$
 
-in its formal MUB model. OpenAI's scope document says plainly that the Lean statement does not establish the upper bound of three or the computer-assisted exclusion of four arbitrary bases.  MathVet consequently classifies result 266 as a weaker-statement formalization. This is the exact semantic gap we're poking.
+The associated Lean development does not attempt to formalize the manuscript's
+computer-assisted exclusion of four mutually unbiased bases. Instead, it proves a
+different, independently interesting bound:
+
+$$
+\boxed{N(6)\le5}.
+$$
+
+OpenAI's own Lean scope documentation makes this distinction explicit: the Lean
+statement does not establish the manuscript's upper bound of three or formalize the
+computer-assisted exclusion of four arbitrary bases.
+
+The two bounds arise from different proof routes. The manuscript obtains
+$N(6)\le3$ through a certified exhaustive computation excluding four MUBs. The
+Lean development obtains $N(6)\le5$ by ruling out seven MUBs and formalizing the
+result that a family of six would extend to seven.
+
+Accordingly, this experiment is not testing whether OpenAI incorrectly treats
+
+$$
+N(6)\le5
+$$
+
+as equivalent to
+
+$$
+N(6)\le3.
+$$
+
+OpenAI does not make that identification.
+
+Instead, we use the pair as a controlled test of SemantEq's ability to distinguish
+a headline theorem from a related but weaker formally verified theorem. Because the
+fixtures share the same MUB definitions, the comparison isolates statement strength
+rather than differences in ontology or representation.
+
+The reference fixture represents the manuscript upper bound:
+
+$$
+\forall n,; Attainable(n)\rightarrow n\le3,
+$$
+
+while the candidate fixture represents the Lean family bound:
+
+$$
+\forall n,; Attainable(n)\rightarrow n\le5.
+$$
+
+SemantEq-Eval classifies the candidate as:
+
+$$
+\boxed{\texttt{LikelyTooWeak}}.
+$$
+
+It establishes the expected restricted transformation
+
+$$
+N(6)\le3\Longrightarrow N(6)\le5
+$$
+
+but does not establish the reverse direction.
+
+The result therefore demonstrates that SemantEq distinguishes the stronger
+headline claim from the weaker Lean theorem. It should not be interpreted as
+evidence that OpenAI attempted to substitute the Lean theorem for the manuscript's
+computer-assisted proof.
 
 ### MUB References
 
@@ -290,8 +357,8 @@ $$
 
 and found none.
 
-Important epistemic caveat: LikelyTooWeak is deliberately called likely, because SemantEq's search is incomplete. Failure to find the reverse transformation isn't a theorem that no such transformation exists. Its verdict table explicitly distinguishes these directional diagnoses from machine-proven bidirectional equivalence.
 
+Important epistemic caveat: LikelyTooWeak is deliberately called likely, because SemantEq's search is incomplete. Failure to find the reverse transformation isn't a theorem that no such transformation exists. Its verdict table explicitly distinguishes these directional diagnoses from machine-proven bidirectional equivalence.
 
 And there's one important limitation of our experiment to keep straight: we transcribed the documented OpenAI bound and headline into controlled fixtures sharing the same MUB definitions. We have shown:
 
@@ -303,11 +370,11 @@ $$
 
 It did not certify bidirectional restricted equivalence.
 
-We have not yet run SemantEq directly over OpenAI's actual project theorem because of the Lean/Mathlib-version mismatch. OpenAI's own scope note is what establishes that its Lean artifact proves the ≤5 bound rather than the ≤3 headline; our experiment tests the semantic consequence of that documented mismatch.
+We have not yet run SemantEq directly over OpenAI's actual project theorem because of the Lean/Mathlib-version mismatch. OpenAI's own scope note is what establishes that its Lean artifact proves the ≤5 bound rather than the ≤3 headline; our experiment tests the semantic consequence of that documented mismatch. This is a diagnostic of the relationship between the two formal claims, not evidence that OpenAI itself conflated them.
 
 Still, this is a wonderfully clean result. SemantEq did exactly what we'd want a semantic-fidelity checker to do: it did not confuse “the stronger theorem implies this weaker theorem” with “these are two ways of saying the same thing.”
 
-Also, 335,903 ms is about 5 minutes 36 seconds. So apparently it really did need to rummage around before discovering the permitted one-way bridge.
+Also, the run is about 5 minutes so apparently it really did need to rummage around before discovering the permitted one-way bridge.
 
 ## Results summary
 
