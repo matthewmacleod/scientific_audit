@@ -311,8 +311,8 @@ Also, 335,903 ms is about 5 minutes 36 seconds. So apparently it really did need
 
 | Pair | Ref ⇒ Cand | Cand ⇒ Ref | Observed result |
 |---|---:|---:|---|
-| centered vs \([0,1]\) Kakeya segment | ProofAudit PASS | ProofAudit PASS | bidirectionally audited restricted transformation |
-| OAI \(n=3\) arbitrary Kakeya → trusted compact theorem | ProofAudit PASS | not tested | audited one-way implication |
-| MUB \(\le3\) vs Lean \(\le5\) | established | not established in 87 attempts | `LikelyTooWeak` |
+| centered vs $([0,1])$ Kakeya segment | ProofAudit PASS | ProofAudit PASS | bidirectionally audited restricted transformation |
+| OAI $(n=3)$ arbitrary Kakeya → trusted compact theorem | ProofAudit PASS | not tested | audited one-way implication |
+| MUB $(\le3)$ vs Lean $(\le5)$ | established | not established in 87 attempts | `LikelyTooWeak` |
 
 
