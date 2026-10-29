@@ -1,0 +1,1 @@
+{"ante":"oai3_assumed","assumed":[],"file":"../src/oai3_to_trusted_compact.lean","flagDetails":["content-graded local fact trusted_geometry_to_oai feeding ante application"],"flags":1,"goal":"trusted_wang_zahl_from_oai","reasons":[],"verdict":"PASS"}

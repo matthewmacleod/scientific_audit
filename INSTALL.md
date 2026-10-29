@@ -33,6 +33,24 @@ lake exe semanteq --strict --proof \
   ../src/standard_to_oai.lean
 ```
 
+Results:
+```
+[proof-audit] ../src/oai_to_standard.lean
+[semanteq] importing (cache miss #1): #[Init, Mathlib]
+── ../src/oai_to_standard.lean
+   verdict: PASS   (antecedent oai_assumed, goal standard_from_oai)
+   warnings: 1 tolerated (1 local hypothesis meeting a hypothesis of the antecedent)
+   severe warnings: none
+   axioms beyond propext, Classical.choice, Quot.sound: none
+[proof-audit] ../src/standard_to_oai.lean
+── ../src/standard_to_oai.lean
+   verdict: PASS   (antecedent standard_assumed, goal oai_from_standard)
+   warnings: 1 tolerated (1 local hypothesis meeting a hypothesis of the antecedent)
+   severe warnings: none
+   axioms beyond propext, Classical.choice, Quot.sound: none
+```
+
+See [raw](./results/geometry.json)
 
 Prove arbitrary subset Kakeya is equal to the compact Kakeya
 
@@ -40,6 +58,19 @@ Prove arbitrary subset Kakeya is equal to the compact Kakeya
 lake exe semanteq --strict --proof \
   ../src/oai3_to_trusted_compact.lean
 ```
+
+Results:
+```
+[proof-audit] ../src/oai3_to_trusted_compact.lean
+[semanteq] importing (cache miss #1): #[Init, Mathlib]
+── ../src/oai3_to_trusted_compact.lean
+   verdict: PASS   (antecedent oai3_assumed, goal trusted_wang_zahl_from_oai)
+   warnings: 1 tolerated (1 local hypothesis meeting a hypothesis of the antecedent)
+   severe warnings: none
+   axioms beyond propext, Classical.choice, Quot.sound: none
+```
+
+See [raw](./results/subsets.json)
 
 ## MUB Result 266 mutually unbiased bases in C^6
 

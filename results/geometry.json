@@ -1,0 +1,3 @@
+{"ante":"oai_assumed","assumed":[],"file":"../src/oai_to_standard.lean","flagDetails":["content-graded local fact standard_to_oai feeding ante application"],"flags":1,"goal":"standard_from_oai","reasons":[],"verdict":"PASS"}
+[proof-audit] ../src/standard_to_oai.lean
+{"ante":"standard_assumed","assumed":[],"file":"../src/standard_to_oai.lean","flagDetails":["content-graded local fact oai_to_standard feeding ante application"],"flags":1,"goal":"oai_from_standard","reasons":[],"verdict":"PASS"}
