@@ -1,0 +1,13 @@
+[proof-audit] ../src/elliott_prime_range_ref_to_candidate_proofaudit.lean
+[semanteq] importing (cache miss #1): #[Init, Mathlib]
+── ../src/elliott_prime_range_ref_to_candidate_proofaudit.lean
+   verdict: PASS   (antecedent reference_assumed, goal candidate_from_reference)
+   warnings: 3 tolerated (3 library facts inside a rewrite record or a local restatement's proof)
+   severe warnings: none
+   axioms beyond propext, Classical.choice, Quot.sound: none
+[proof-audit] ../src/elliott_prime_range_candidate_to_ref_proofaudit.lean
+── ../src/elliott_prime_range_candidate_to_ref_proofaudit.lean
+   verdict: PASS   (antecedent candidate_assumed, goal reference_from_candidate)
+   warnings: 3 tolerated (3 library facts inside a rewrite record or a local restatement's proof)
+   severe warnings: none
+   axioms beyond propext, Classical.choice, Quot.sound: none

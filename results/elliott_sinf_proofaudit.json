@@ -1,0 +1,2 @@
+{"ante":"reference_assumed","assumed":[],"file":"../src/elliott_sinf_ref_to_candidate_proofaudit.lean","flagDetails":[],"flags":0,"goal":"candidate_from_reference","reasons":["content import le_trans on goal spine (application head)","content import csInf_le on goal spine (application head)"],"verdict":"FAIL"}
+{"ante":"candidate_assumed","assumed":[],"file":"../src/elliott_sinf_candidate_to_ref_proofaudit.lean","flagDetails":[],"flags":0,"goal":"reference_from_candidate","reasons":["content import le_csInf on goal spine (application head)"],"verdict":"FAIL"}

@@ -132,3 +132,27 @@ semanteq v1.4.0  git f927670  2026-10-27T22:35:59Z
 ```
 
 
+
+## E3 Ordinary Elliott: uniform nonpretentiousness
+
+First run the raw source-form comparison with the prior expectation frozen before the
+result is observed:
+
+```bash
+lake exe semanteq --strict --timeout 0 \
+  ../src/elliott_infimum_ref.lean \
+  ../src/elliott_threshold_candidate.lean
+```
+
+For an archival machine-readable record, rerun with `--raw` and redirect stdout:
+
+```bash
+lake exe semanteq --strict --timeout 0 --raw \
+  ../src/elliott_infimum_ref.lean \
+  ../src/elliott_threshold_candidate.lean \
+  > ../results/elliott_raw.json
+```
+
+Do not add hand-written bridge lemmas before recording this baseline result. If the raw
+comparison is inconclusive, preserve that result and proceed to factored probes rather
+than treating search failure as non-equivalence.

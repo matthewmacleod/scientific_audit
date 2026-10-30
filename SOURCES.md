@@ -255,3 +255,83 @@ MathVet independently classifies OpenAI family 266's Lean formalization as weake
 Source:
 
 - https://math.vet/openai-math/
+
+
+## Ordinary Elliott / E3 sources
+
+### OpenAI release snapshot
+
+E3 pins the two comparator files to OpenAI math commit:
+
+```text
+fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb
+```
+
+The experiment compares two independently written encodings of uniform
+nonpretentiousness in that release. The fixtures intentionally isolate the predicate
+rather than the complete corrected-Elliott theorem, because the two source files also
+use different `OneBounded` assumptions at `n = 0`.
+
+### Infimum / Tendsto formulation
+
+Source:
+
+- https://raw.githubusercontent.com/openai/math/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/lean/ComparatorChallenges/OrdinaryElliott.lean
+
+The source defines a squared pretentious distance using primes in
+`Finset.Icc 2 ⌊X⌋₊`, defines `distance` as its real square root, and states uniform
+nonpretentiousness as
+
+$$
+\inf_{|t|\le N} D(f,\chi n^{it};N) \longrightarrow \infty.
+$$
+
+In Lean this is represented by `Tendsto` of an `sInf` over the image of the interval
+`Set.Icc (-(N : ℝ)) (N : ℝ)`.
+
+### Eventual-threshold formulation
+
+Source:
+
+- https://raw.githubusercontent.com/openai/math/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/lean/ComparatorChallenges/OrdinaryTwoPointCorrelations.lean
+
+This source packages the same intended pretentious distance through `primesUpTo`,
+`squaredDistance`, and `characterTwist`, and states uniform nonpretentiousness as
+
+$$
+\forall K\in\mathbb R,\quad
+\forall^\infty N,\quad
+\forall |t|\le N,\quad
+K\le D^2(f,\chi n^{it};N).
+$$
+
+The raw comparison therefore contains three representation changes:
+
+1. primes encoded by `Finset.Icc 2 N` versus filtered `Finset.range (N + 1)`;
+2. an expanded character twist with `star` versus `characterTwist` with complex
+   conjugation; and
+3. infimum/square-root divergence versus eventual lower bounds on the squared
+   distance.
+
+### OpenAI scope note
+
+- https://raw.githubusercontent.com/openai/math/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/lean/docs/007.md
+
+The scope note describes the corrected Elliott result as requiring uniform
+nonpretentiousness against all Dirichlet-character twists with frequency
+$|t|\le N$.
+
+### Controlled SemantEq probe
+
+`src/elliott_infimum_ref.lean` transcribes the infimum/Tendsto predicate.
+
+`src/elliott_threshold_candidate.lean` transcribes the eventual-threshold predicate.
+
+The final declaration in each file states the corresponding predicate for an arbitrary
+function $f : \mathbb N \to \mathbb C$. SemantEq therefore compares the two predicate
+encodings themselves rather than the surrounding corrected-Elliott theorem.
+
+**Frozen prior expectation:** `EquivalentRestricted` (or a stronger exact/definitional
+match verdict if the normalizer collapses more than expected). An `Inconclusive`
+result is not evidence of non-equivalence; it would trigger factored probes isolating
+the distance representation from the outer divergence formulation.

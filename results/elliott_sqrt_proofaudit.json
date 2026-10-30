@@ -1,0 +1,2 @@
+{"ante":"reference_assumed","assumed":[],"file":"../src/elliott_sqrt_ref_to_candidate_proofaudit.lean","flagDetails":[],"flags":0,"goal":"candidate_from_reference","reasons":[],"verdict":"PASS"}
+{"ante":"candidate_assumed","assumed":[],"file":"../src/elliott_sqrt_candidate_to_ref_proofaudit.lean","flagDetails":[],"flags":0,"goal":"reference_from_candidate","reasons":[],"verdict":"PASS"}
