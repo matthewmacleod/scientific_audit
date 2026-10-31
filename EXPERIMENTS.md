@@ -797,8 +797,7 @@ E4-B2 result: LikelyTooWeak. SemantEq proved the exact-threshold reference impli
 lake env lean ../src/reconstruction_separation_witness.lean
 ```
 
-
-
+finishes successfully.
 
 
 ---
