@@ -744,10 +744,12 @@ theorem reconstruction_exact_ref
     ...
 
 That means Reconstructs is universally quantified as part of the theorem. So the candidate is really something like
-\[
+
+$$
 \forall R\,\forall b\,\forall\lambda,\quad
 P(b,\lambda)\to R(b,\lambda),
-\]
+$$
+
 rather than a theorem about one fixed reconstruction predicate. If there exists a supercritical admissible pair, choosing $R=\bot$ makes that universal theorem inconsistent. Strict SemantEq did not exploit that inconsistency, which is good, but it means this controlled fixture is not as semantically clean as I thought when I wrote it.
 
 Provisional only: Reconstructs was universally quantified, so this fixture tests syntactic/logical shape but is not used as the canonical E4 strength comparison.
@@ -799,6 +801,20 @@ lake env lean ../src/reconstruction_separation_witness.lean
 
 finishes successfully.
 
+
+E4 is not merely “SemantEq didn’t prove the converse.” We have independently established strict weakening:
+
+$$
+\text{Exact threshold} \Rightarrow \text{Supercritical theorem}
+$$
+
+but
+
+$$
+\text{Supercritical theorem} \nRightarrow \text{Exact threshold}.
+$$
+
+That gives us a nice methodological contrast between search incompleteness (E3) and correct strength diagnosis (E4).
 
 ---
 
