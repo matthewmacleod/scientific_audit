@@ -50,3 +50,23 @@ The interpretation should distinguish at least the following outcomes where appl
 - **Unknown:** the permitted search/transformation system did not settle the relationship.
 
 A failure to prove equivalence is not, by itself, evidence of non-equivalence.
+
+## Experiments
+
+The audit experiments are documented individually here:
+
+- [E1 — Kakeya](./E1-Kakeya.md)
+- [E2 — MUB](./E2-MUB.md)
+- [E3 — Elliott](./E3-Elliott.md)
+- [E4 — Reconstruction](./E4-Reconstruction.md)
+- [E5 — Mass Action](./E5-Mass-Action.md)
+- [E6 — Borsuk](./E6-Borsuk.md)
+- [E7 — Pi Irrationality Exponent](./E7-Pi-Irrationality-Exponent.md)
+- [E8 — Weak Mixing](./E8-Weak-Mixing.md)
+- [E9 — Heilbronn](./E9-Heilbronn.md)
+- [E10 — Stable Coordinate](./E10-Stable-Coordinate.md)
+- [E11 — L/RL BPL](./E11-L-RL-BPL.md)
+- [E12 — Hyperbolicity Cones](./E12-Hyperbolicity-Cones.md)
+- [E13 — Riesz BPLI](./E13-Riesz-BPLI.md)
+- [E14 — ETH](./E14-ETH.md)
+

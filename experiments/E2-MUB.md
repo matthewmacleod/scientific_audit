@@ -24,9 +24,177 @@ $$
 N\le 5.
 $$
 
-We expect the stronger bound to imply the weaker bound, but not conversely. This is the clean numerical-weakening control case.
 
-## Results
+## Background
+
+[Wikipedia](https://en.wikipedia.org/wiki/Mutually_unbiased_bases)
+
+What is a mutually unbiased basis?  Take two orthonormal bases of $\mathbb C^d$
+
+
+$$
+B=\{e_1,\dots,e_d\},
+\qquad
+C=\{f_1,\dots,f_d\}.
+$$
+
+They are mutually unbiased if
+
+$$
+|\langle e_i,f_j\rangle|^2=\frac1d
+$$
+
+for every $(i,j)$.
+
+Operationally, if a quantum state is known perfectly in basis $(B)$, then measuring it in basis $(C)$ gives a completely uniform distribution. The two measurements reveal maximally complementary information.
+
+Wootters and Fields showed in 1989 that there can be at most
+
+$$
+d+1
+$$
+
+pairwise mutually unbiased bases, and that this maximum is achieved whenever $(d)$ is a prime power.
+
+So:
+
+$$
+d=2\Rightarrow3,
+\qquad
+d=3\Rightarrow4,
+\qquad
+d=4\Rightarrow5,
+\qquad
+d=5\Rightarrow6,
+$$
+
+and so on.
+
+Then comes:
+
+$$
+\boxed{d=6}
+$$
+
+which is not a prime power.
+
+That is the first mysterious case.
+Why six became famous
+For $\mathbb C^6$, the general upper bound gives
+
+$$
+N(6)\le7.
+$$
+
+Three mutually unbiased bases are known to exist.
+
+But for decades nobody could construct four.  Gerhard Zauner conjectured, originally in work going back to his 1991 master's thesis and his 1999 dissertation, that four MUBs in dimension six do not exist:
+
+$$
+\boxed{N(6)=3.}
+$$
+
+His later English translation explicitly describes the dimension-six construction of infinite families of MUB triples and the conjecture that four do not exist. This is generally called the dimension-six MUB conjecture or Zauner's MUB conjecture.  And it has resisted a remarkable variety of attacks.
+
+
+## Experiment Details
+
+
+OpenAI's manuscript claims:
+
+$$
+N(6)=3,
+$$
+
+with the novel upper-bound component:
+
+$$
+N(6)\le3.
+$$
+
+The associated Lean development does not attempt to formalize the manuscript's
+computer-assisted exclusion of four mutually unbiased bases. Instead, it proves a
+different, independently interesting bound:
+
+$$
+\boxed{N(6)\le5}.
+$$
+
+OpenAI's own Lean scope documentation makes this distinction explicit: the Lean
+statement does not establish the manuscript's upper bound of three or formalize the
+computer-assisted exclusion of four arbitrary bases.
+
+The two bounds arise from different proof routes. The manuscript obtains
+$N(6)\le3$ through a certified exhaustive computation excluding four MUBs. The
+Lean development obtains $N(6)\le5$ by ruling out seven MUBs and formalizing the
+result that a family of six would extend to seven.
+
+Accordingly, this experiment is not testing whether OpenAI incorrectly treats
+
+$$
+N(6)\le5
+$$
+
+as equivalent to
+
+$$
+N(6)\le3.
+$$
+
+OpenAI does not make that identification.
+
+Instead, we use the pair as a controlled test of SemantEq's ability to distinguish
+a headline theorem from a related but weaker formally verified theorem. Because the
+fixtures share the same MUB definitions, the comparison isolates statement strength
+rather than differences in ontology or representation.
+
+The reference fixture represents the manuscript upper bound:
+
+$$
+\forall n,; Attainable(n)\rightarrow n\le3,
+$$
+
+while the candidate fixture represents the Lean family bound:
+
+$$
+\forall n,; Attainable(n)\rightarrow n\le5.
+$$
+
+SemantEq-Eval classifies the candidate as:
+
+$$
+\boxed{\texttt{LikelyTooWeak}}.
+$$
+
+It establishes the expected restricted transformation
+
+$$
+N(6)\le3\Longrightarrow N(6)\le5
+$$
+
+but does not establish the reverse direction.
+
+The result therefore demonstrates that SemantEq distinguishes the stronger
+headline claim from the weaker Lean theorem. It should not be interpreted as
+evidence that OpenAI attempted to substitute the Lean theorem for the manuscript's
+computer-assisted proof.
+
+### MUB References
+
+
+- Wootters & Fields (1989), “Optimal state-determination by mutually unbiased measurements.” The foundational $(d+1)$ bound and prime-power construction. [ScienceDirect Paper](https://www.sciencedirect.com/science/article/abs/pii/0003491689903229)
+- Zauner, Quantum Designs. Historical source for the dimension-six conjecture and early MUB triples. 
+ [Gerhard Zauner 1999 dissertation](https://www.gerhardzauner.at/documents/gz-quantendesigns.pdf)
+- Durt, Englert, Bengtsson & Życzkowski (2010), “On mutually unbiased bases.” Classic broad review and the relationship to Hadamard matrices and quantum information. [arXiv](https://arxiv.org/abs/1004.3348)
+- McNulty & Weigert (2026), “Mutually Unbiased Bases in Composite Dimensions — A Review.” Probably the best background source for us now; 104 pages, fourteen equivalent formulations, extensive treatment of $(d=6)$. [arXiv](https://arxiv.org/abs/2410.23997)
+  Current review
+- Jaming, Matolcsi & Móra, “The problem of mutually unbiased bases in dimension 6.” Good history of the computational/discretization attack. [arXiv](https://arxiv.org/abs/1201.0640)
+- OpenAI (Sept. 24, 2026), “The maximum number of mutually unbiased bases in dimension six.” The new claimed resolution. [Math Community OpenAI preprint record](https://mathcommunity.github.io/oai-math-revised/papers/The-maximum-number-of-mutually-unbiased-bases-in-dimension-six-September-24-2026/)
+- OpenAI Lean scope note, result 266. This is the crucial reference for our experiment: it explicitly says the Lean family bound is five rather than three
+  [Lean scope for result 266](https://github.com/openai/math/blob/main/lean/docs/266.md)
+- MathVet result 266. Independent classification of the Lean formalization as a weaker statement. [MathVet fidelity table](https://math.vet/openai-math/)
+
+## Results Run
 
 
 ```
@@ -86,4 +254,152 @@ semanteq v1.4.0  git f927670  2026-10-27T22:35:59Z
       no proof found in 87 attempts
 ```
 
+
+### Results and Discussion
+
+Run:
+```
+lake exe semanteq --strict --timeout 0 \
+   ../mub_headline_ref.lean \
+   ../mub_oai_candidate.lean
+```
+and see results here [raw results](./results/mub.json)
+
+Results:
+```
+lake exe semanteq --strict --timeout 0 \
+  ../mub_headline_ref.lean \
+  ../mub_oai_candidate.lean
+semanteq v1.4.0  git f927670  2026-10-27T22:35:59Z
+[semanteq] warm-up: importing the batch's most frequent set #[Init, Mathlib]
+[semanteq] importing (cache miss #1): #[Init, Mathlib]
+[semanteq] processing mub_headline_ref__vs__mub_oai_candidate
+── mub_headline_ref__vs__mub_oai_candidate
+   verdict: LikelyTooWeak   (335903 ms)
+   ref ⇒ cand: proved
+      script: simp only [Nat.le_succ_iff] at hyps/h_ante; simp only [SemantEqRef.headline_at_most_three]; <structural close>
+      proof:  fun n =>
+                Eq.mpr
+                  (id
+                    (implies_congr
+                      (Eq.refl (∃ B, ∀ (r s : Fin n), r ≠ s → ∀ (i j : Fin 6), Complex.normSq (inner ℂ ((B r) i) ((B s) j)) = 1 / 6))
+                      (Eq.trans _simp_1
+                        (congrFun'
+                          (congrArg Or
+                            (Eq.trans _simp_1
+                              (congrFun'
+                                (congrArg Or
+                                  (Eq.trans _simp_1
+                                    (congrFun' (congrArg Or (Eq.trans _simp_1 (congrFun' (congrArg Or _simp_1) (n = Nat.succ 1))))
+                                      (n = Nat.succ 2))))
+                                (n = Nat.succ 3))))
+                          (n = Nat.succ 4)))))
+                  fun a =>
+                  Or.inl
+                    (Or.inl
+                      (Eq.mp
+                        (forall_congr fun n =>
+                          implies_congr (Eq.refl (SemantEqRef.RefAttainable n))
+                            (Eq.trans _simp_1
+                              (congrFun' (congrArg Or (Eq.trans _simp_1 (congrFun' (congrArg Or _simp_1) (n = Nat.succ 1))))
+                                (n = Nat.succ 2))))
+                        SemantEqRef.headline_at_most_three n a))
+   cand ⇒ ref: not proved
+      no proof found in 87 attempts
+```
+
+
+
+This is our first clean negative SemantEq result:
+
+$$
+\boxed{\texttt{LikelyTooWeak}}
+$$
+
+rather than EquivalentRestricted.
+
+
+The restricted search established the expected direction $(N(6)\le3\Rightarrow N(6)\le5$, but did not establish the reverse direction.
+
+This is very important because SemantEq did not prove that the reverse implication is false. It performed 87 restricted proof attempts and found none. And because these are closed propositions involving the actual Attainable predicate, substantive mathematics about MUBs could in principle establish the stronger proposition. Indeed, that is exactly what the OpenAI manuscript claims to do.
+
+
+With unlimited time, it found a cleaner route:
+```text
+simp only [Nat.le_succ_iff]
+...
+<structural close>
+```
+
+`Nat.le_succ_iff` is itself an iff-grade rewrite, so it fits SemantEq's permitted transformation vocabulary. SemantEq explicitly allows logical rearrangement, equality/iff rewriting, changes of variables, and structural weakening, while refusing arbitrary theorem proving as evidence of semantic equivalence. GitHub
+
+So it effectively transformed:
+
+$$
+n\le3
+$$
+
+into the corresponding finite disjunctive structure and then structurally weakened that to:
+
+$$
+n\le5.
+$$
+
+That is not being treated as equivalence. It is being recognized as a legitimate one-way weakening.
+
+That's exactly why the final classification is:
+
+$$
+\boxed{\text{candidate was classified LikelyTooWeak}}
+$$
+
+rather than 'these mean the same thing.' And the reverse result is almost prettier
+```
+cand ⇒ ref: not proved
+    no proof found in 87 attempts
+```
+
+So SemantEq tried 87 restricted transformation routes from
+
+$$
+n\le5
+$$
+
+to
+
+$$
+n\le3
+$$
+
+and found none.
+
+
+Important epistemic caveat: LikelyTooWeak is deliberately called likely, because SemantEq's search is incomplete. Failure to find the reverse transformation isn't a theorem that no such transformation exists. Its verdict table explicitly distinguishes these directional diagnoses from machine-proven bidirectional equivalence.
+
+And there's one important limitation of our experiment to keep straight: we transcribed the documented OpenAI bound and headline into controlled fixtures sharing the same MUB definitions. We have shown:
+
+$$
+\boxed{
+\text{SemantEq-Eval classified }(\le5)\text{ as LikelyTooWeak relative to }(\le3).
+}
+$$
+
+It did not certify bidirectional restricted equivalence.
+
+We have not yet run SemantEq directly over OpenAI's actual project theorem because of the Lean/Mathlib-version mismatch. OpenAI's own scope note is what establishes that its Lean artifact proves the ≤5 bound rather than the ≤3 headline; our experiment tests the semantic consequence of that documented mismatch. This is a diagnostic of the relationship between the two formal claims, not evidence that OpenAI itself conflated them.
+
+Still, this is a wonderfully clean result. SemantEq did exactly what we'd want a semantic-fidelity checker to do: it did not confuse “the stronger theorem implies this weaker theorem” with “these are two ways of saying the same thing.”
+
+Also, the run is about 5 minutes so apparently it really did need to rummage around before discovering the permitted one-way bridge.
+
+## Results summary
+
+| Pair | Ref ⇒ Cand | Cand ⇒ Ref | Observed result |
+|---|---:|---:|---|
+| centered vs $([0,1])$ Kakeya segment | ProofAudit PASS | ProofAudit PASS | bidirectionally audited restricted transformation |
+| OAI $(n=3)$ arbitrary Kakeya → trusted compact theorem | ProofAudit PASS | not tested | audited one-way implication |
+| MUB $(\le3)$ vs Lean $(\le5)$ | established | not established in 87 attempts | `LikelyTooWeak` |
+
+
+We expect the stronger bound to imply the weaker bound, but not conversely. This is the clean numerical-weakening control case.
 
