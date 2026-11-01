@@ -106,6 +106,10 @@ _To be filled from the completed SemantEq/Lean run._
 - [OpenAI formalization scope: ordinary two-point correlations and the corrected Elliott conjecture](https://github.com/openai/math/blob/main/lean/docs/007.md)
 - [OpenAI Comparator: `OrdinaryElliott.lean`](https://github.com/openai/math/blob/main/lean/ComparatorChallenges/OrdinaryElliott.lean)
 
+- [Wikepedia Background Multiplicative Function](https://en.wikipedia.org/wiki/Multiplicative_function)
+- [Wikepedia Background Analytic Number Theory](https://en.wikipedia.org/wiki/Analytic_number_theory)
+- [Terence Tao's Intro](https://terrytao.wordpress.com/2015/09/11/the-erdos-discrepancy-problem-via-the-elliott-conjecture/)
+
 ### Experiment
 
 Compare two formal encodings of uniform nonpretentiousness appearing in the OpenAI development.
@@ -689,6 +693,8 @@ E3 conclusion. OpenAI's two independently written formulations of uniform nonpre
 
 - [OpenAI paper: The exact reconstruction threshold for the three-state symmetric channel](https://github.com/openai/math/tree/main/preprints/The-exact-reconstruction-threshold-for-the-three-state-symmetric-channel-September-25-2026)
 - [OpenAI math repository](https://github.com/openai/math)
+-
+- [Wikepedia](https://en.wikipedia.org/wiki/Reconstruction_conjecture)
 
 ### Experiment
 
@@ -830,6 +836,11 @@ That gives us a nice methodological contrast between search incompleteness (E3) 
 - [OpenAI Comparator: `MassAction.lean`](https://github.com/openai/math/blob/main/lean/ComparatorChallenges/MassAction.lean)
 - [OpenAI paper: Uniform Permanence in Weakly Reversible Mass-Action Systems](https://github.com/openai/math/tree/main/preprints/Uniform-Permanence-in-Weakly-Reversible-Mass-Action-Systems-October-5-2026)
 
+- [arXiv review](https://arxiv.org/abs/1010.3050)
+- [Wikipedia Chemical reaction network theory](https://en.wikipedia.org/wiki/Chemical_reaction_network_theory)
+- [A blog on reaction network theory](https://johncarlosbaez.wordpress.com/2011/11/12/network-theory-part-17/)
+
+
 ### Experiment
 
 Compare a classwise permanence claim in which one common compact absorbing set, or one common positive bound, works for every trajectory in a positive stoichiometric compatibility class with a statement in which the bound may depend on the initial state.
@@ -848,9 +859,532 @@ $$
 
 The first implies the second, while the reverse does not follow in general. This is intended as a direct test of whether SemantEq preserves quantifier scope rather than matching only local predicates and vocabulary.
 
+#### Experimental refinement
+
+E5-A — Uniformity only. Hold everything else fixed and compare
+
+$$
+\exists\varepsilon\,\forall x_0\,P(\varepsilon,x_0)
+$$
+
+against
+
+$$
+\forall x_0\,\exists\varepsilon\,P(\varepsilon,x_0).
+$$
+
+
+E5-B — Time only. Fix one $(x_0,\varepsilon)$ and compare eventual bounds
+
+$$
+\exists T\,\forall t\ge T,\;P(t)
+$$
+
+against all-time bounds
+
+$$
+\forall t\ge0,\;P(t).
+$$
+
+Here the direction reverses:
+
+$$
+\text{all-time}\Rightarrow\text{eventual},
+$$
+
+but not conversely. This isolates the part where Lean is actually stronger.
+
+E5-C — Combined reduced claim. Compare
+
+$$
+\exists\varepsilon\;\forall x_0\;\exists T(x_0)\;\forall t\ge T(x_0)
+$$
+
+against
+
+$$
+\forall x_0\;\exists\varepsilon(x_0)\;\forall t\ge0.
+$$
+
+E5-D — Source-faithful reduced mass-action model. Restore positive states, classes, global solutions, species-indexed concentrations, $(\varepsilon\in(0,1))$, and reciprocal upper bounds, while keeping the ODE itself opaque. This tells us whether the conclusions above survive a much closer representation of MassAction.lean.
+
+E5-E — Geometry bridge. Formalize the connection between a compact absorbing set in the positive orthant and common positive lower/finite upper coordinate bounds. This is the mathematical bridge from the headline’s geometric permanence language to an $(\varepsilon)$-style formulation.
+
+E5-F — Full-source stress test. Only after we know all the pieces separately do we throw a headline-faithful permanence formulation and the actual comparator structure at SemantEq. Then if it gets stuck, we know why.
+
+
 ### Results
 
-_To be filled after the experiment._
+
+#### E5-A
+
+```
+lake exe semanteq --strict --raw --timeout 0 \
+  ../src/mass_action_uniform_ref.lean \
+  ../src/mass_action_pointwise_candidate.lean > ../results/E5-A.json
+```
+
+SemantEq result: LikelyTooWeak; reference ⇒ candidate proved, candidate ⇒ reference not proved. Prior directionality confirmed by automated search. Strict non-implication to be independently established by E5-A separation witness.
+
+
+```
+lake env lean ../src/mass_action_uniformity_separation_witness.lean
+```
+
+The pointwise candidate preserves per-trajectory boundedness but does not preserve the classwise uniform witness required by permanence.
+
+#### E5-B
+
+```
+lake exe semanteq --strict --timeout 0 \
+  ../src/mass_action_eventual_ref.lean \
+  ../src/mass_action_all_time_candidate.lean
+semanteq v1.4.0  git f927670  2026-10-31T18:50:32Z
+[semanteq] warm-up: importing the batch's most frequent set #[Init, Mathlib]
+[semanteq] importing (cache miss #1): #[Init, Mathlib]
+[semanteq] processing mass_action_eventual_ref__vs__mass_action_all_time_candidate
+── mass_action_eventual_ref__vs__mass_action_all_time_candidate
+   verdict: Inconclusive   (202846 ms)
+   ref ⇒ cand: not proved
+      no proof found in 37 attempts
+   cand ⇒ ref: not proved
+      no proof found in 37 attempts
+```
+
+E5-B: Eval returned Inconclusive in both directions, although a direct kernel-checked proof establishes candidate ⇒ reference by choosing \(T=0\), and a separate Lean countermodel proves reference ⇏ candidate.
+
+
+```
+lake env lean ../src/mass_action_time_bridge.lean
+lake env lean ../src/mass_action_time_separation_witness.lean
+```
+clean.
+
+
+#### E5-C
+
+This sets up E5-C beautifully. We now combine the two opposing changes:
+
+Reference-like permanence:
+
+$$
+\exists \varepsilon>0\;
+\forall x_0>0\;
+\exists T\ge0\;
+\forall t\ge T,\;
+P(\varepsilon,x_0,t)
+$$
+
+versus Lean-like trajectorywise bounds:
+
+$$
+\forall x_0>0\;
+\exists \varepsilon>0\;
+\forall t\ge0,\;
+P(\varepsilon,x_0,t).
+$$
+
+
+```
+lake exe semanteq --strict --timeout 0 \
+  ../src/mass_action_uniform_eventual_ref.lean \
+  ../src/mass_action_pointwise_all_time_candidate.lean
+semanteq v1.4.0  git f927670  2026-11-01T00:00:17Z
+[semanteq] warm-up: importing the batch's most frequent set #[Init, Mathlib]
+[semanteq] importing (cache miss #1): #[Init, Mathlib]
+[semanteq] processing mass_action_uniform_eventual_ref__vs__mass_action_pointwise_all_time_candidate
+── mass_action_uniform_eventual_ref__vs__mass_action_pointwise_all_time_candidate
+   verdict: Inconclusive   (230419 ms)
+   ref ⇒ cand: not proved
+      no proof found in 49 attempts
+   cand ⇒ ref: not proved
+      no proof found in 49 attempts
+```
+
+This is clean:
+```
+lake env lean ../src/mass_action_combined_separation_witnesses.lean
+```
+
+E5-C Eval: Inconclusive; neither implication proved in 49 attempts. Frozen prior was logical incomparability because the reference strengthens uniformity across initial states while the candidate strengthens temporal scope.
+
+#### E5-D
+
+Checked the pinned OpenAI comparator again. Its conclusion really does preserve these features: positive species-indexed initial concentrations; an $(\varepsilon\in(0,1))$; existence of a global forward solution; every global forward solution bounded for every $(t\ge0)$; and, for every species $(i)$,
+
+$$
+\varepsilon\le x_i(t)\le\varepsilon^{-1}.
+$$
+
+Crucially, $(\varepsilon)$ comes after $(x_0)$, and OpenAI's scope note explicitly says it may depend on the initial state.
+
+For D, we preserve all of that conclusion structure, plus an explicit compatibility class, while abstracting only the internal reaction-network/ODE machinery.
+
+Frozen E5-D prior
+Because D retains the same crossed quantifiers as C, our prior remains:
+
+$$
+\boxed{\text{logically incomparable}}
+$$
+
+Reference wins on classwise uniformity:
+
+$$
+\exists\varepsilon\;\forall x_0\in C
+$$
+
+while candidate wins on temporal scope:
+
+$$
+\forall t\ge0
+$$
+
+instead of trajectory-dependent eventual entry.
+
+```
+lake exe semanteq --strict --timeout 0 \
+  ../src/mass_action_source_reduced_ref.lean \
+  ../src/mass_action_source_reduced_candidate.lean
+semanteq v1.4.0  git f927670  2026-11-01T02:28:43Z
+[semanteq] warm-up: importing the batch's most frequent set #[Init, Mathlib]
+[semanteq] importing (cache miss #1): #[Init, Mathlib]
+[semanteq] processing mass_action_source_reduced_ref__vs__mass_action_source_reduced_candidate
+── mass_action_source_reduced_ref__vs__mass_action_source_reduced_candidate
+   verdict: Inconclusive   (318375 ms)
+   ref ⇒ cand: not proved
+      no proof found in 67 attempts
+   cand ⇒ ref: not proved
+      no proof found in 67 attempts
+```
+
+Reduced source-shaped probe: Inconclusive. Neither direction proved. Because the fixture leaves trajectory regularity and positivity opaque, it preserves the logical incomparability of E5-C and is not yet treated as the final source-level relationship.
+
+
+#### E5-D1
+
+Rather than making another countermodel, I’d add precisely the fact we omitted:
+A positive continuous trajectory that is eventually contained in a reciprocal box admits some trajectory-specific reciprocal box valid from time zero.
+
+That is a real-analysis lemma, independent of reaction-network details.
+
+Schematically:
+
+$$
+\begin{aligned}
+&x:[0,\infty)\to(0,\infty)^d,\\
+&x\text{ continuous},\\
+&\exists T,\varepsilon_C>0:
+  \forall t\ge T,\,
+  \varepsilon_C\le x_i(t)\le\varepsilon_C^{-1}
+\\[3pt]
+&\qquad\Longrightarrow\\[3pt]
+&\exists\delta>0:
+  \forall t\ge0,\,
+  \delta\le x_i(t)\le\delta^{-1}.
+\end{aligned}
+$$
+
+If we kernel-prove that, it resolves the question we just uncovered: the “all-time” part of OpenAI's theorem is not actually stronger than permanence once positivity and continuity are restored; it is obtainable by absorbing the finite transient into an $(x_0)$-dependent constant.  Then the only substantive lost strength is the one you’d expect chemically:
+
+$$
+\boxed{\text{uniformity over the stoichiometric class}.}
+$$
+
+
+```
+lake env lean ../src/mass_action_transient_bridge.lean
+```
+
+This is an important result.
+
+E5-D1 now kernel-proves:
+
+$$
+\boxed{
+\text{positive continuous trajectory}
++
+\text{eventual reciprocal box}
+\Rightarrow
+\text{some trajectory-specific all-time reciprocal box}
+}
+$$
+
+So the earlier E5-C incomparability really was caused by abstracting away physical/analytic structure. Once continuity and strict positivity return, the apparent temporal strengthening can be absorbed into the finite transient.
+
+That changes the emerging E5 story:
+
+- E5-A: $(\exists\varepsilon\,\forall x_0)$ is strictly stronger than $(\forall x_0\,\exists\varepsilon)$.
+- E5-B: abstractly, all-time is stronger than eventual.
+- E5-C/D: with no trajectory regularity, those opposing changes produce incomparability.
+- E5-D1: for actual positive continuous trajectories, eventual $(\Rightarrow\)$ trajectory-specific all-time bounds, so the temporal opposition disappears.
+
+Which suggests the source-level relationship may really be:
+
+$$
+\boxed{
+\text{classwise permanence}
+\Rightarrow
+\text{OpenAI's trajectorywise bound}
+}
+$$
+
+with the lost information concentrated in classwise uniformity, not temporal scope.  That is a much subtler and better conclusion than simply reading the quantifier surface.
+
+The natural E5-D2 now is to lift D1 from one concentration coordinate to finitely many species and obtain one common $(\delta)$ for all $(i\in\mathrm{Fin}\,d)$:
+
+$$
+\exists\delta>0\;
+\forall i,\forall t\ge0,\qquad
+\delta\le x_i(t)\le\delta^{-1}.
+$$
+
+Because the species set is finite, we should be able to take the minimum of the finitely many coordinatewise $(\delta_i)$'s.
+
+
+#### E5-D2
+
+```
+lake env lean ../src/mass_action_transient_bridge_fin.lean
+```
+clean.
+
+D2 passes, and we have formally established the chemically relevant statement
+
+$$
+\begin{aligned}
+&\forall i,\quad x_i(t)>0
+\quad\text{and}\quad x_i \text{ continuous},\\
+&\exists T,\varepsilon_C>0:\quad
+t\ge T
+\Rightarrow
+\forall i,\;
+\varepsilon_C\le x_i(t)\le\varepsilon_C^{-1}
+\\
+&\qquad\Longrightarrow\\
+&\exists\delta(x_0)>0:\quad
+\forall t\ge0,\forall i,\;
+\delta(x_0)\le x_i(t)\le\delta(x_0)^{-1}.
+\end{aligned}
+$$
+
+
+We now have the finite-species version of the transient bridge. So the apparent “eventual vs from $(t=0)$” mismatch really can be absorbed into a trajectory-specific \(\delta\) once we restore continuity, positivity, and finitely many species.
+
+#### E5-E1
+
+This is the scalar compact-set bridge.  This one is pleasantly direct because Mathlib has exactly the compactness fact we want: a continuous function that is strictly above $(0)$ on a compact set has a uniform positive lower bound.
+
+We prove:
+
+$$
+K\subset(0,\infty),\quad K\text{ compact}
+$$
+
+implies
+
+$$
+\exists \varepsilon\in(0,1)\;
+\forall x\in K,\qquad
+\varepsilon\le x\le\varepsilon^{-1}.
+$$
+
+```
+lake env lean ../src/mass_action_compact_scalar_bridge.lean
+```
+
+E5-E1 passed, we've formally connected the geometric language to the comparator-style language in one dimension:
+
+$$
+\boxed{
+\text{compact + strictly positive}
+\Rightarrow
+\text{uniform positive lower and finite upper bounds}
+}
+$$
+
+The nice part is that this proof doesn't even need $(K)$ to be explicitly nonempty; the compactness lemmas handle the vacuous empty-set case too.
+
+#### E5-E2
+
+```
+lake env lean ../src/mass_action_compact_species_bridge.lean
+```
+
+
+We have the exact finite-dimensional geometric bridge we wanted:
+
+$$
+\boxed{
+K\subset(\mathbb R_{>0})^d,\quad K\text{ compact}
+\Rightarrow
+\exists\varepsilon\in(0,1)\;
+\forall x\in K,\forall i,\;
+\varepsilon\le x_i\le\varepsilon^{-1}
+}
+$$
+
+And the chain is formally getting very strong:
+
+$$
+\text{compact positive absorbing set}
+\overset{\text{E5-E2}}{\Longrightarrow}
+\text{uniform eventual reciprocal box}
+$$
+
+followed by
+
+$$
+\text{uniform eventual reciprocal box}
+\overset{\text{E5-D2}}{\Longrightarrow}
+\text{trajectory-specific all-time reciprocal box}.
+$$
+
+#### E5-F
+
+```
+lake env lean ../src/mass_action_final_composition_bridge.lean
+```
+
+The clean kernel check now gives us a formal composition:
+
+$$
+\boxed{
+\text{headline-style classwise permanence}
+\Rightarrow
+\text{OpenAI-style trajectorywise all-time bounds}
+}
+$$
+
+provided the ordinary dynamical background assumptions we made explicit hold: forward continuity, positivity, uniqueness, and compatibility-class membership.
+
+And that changes the interpretation of the whole experiment in an important way.
+
+At first, the surface quantifiers suggested two competing differences:
+
+$$
+\text{uniform but eventual}
+\quad\text{vs}\quad
+\text{pointwise but all-time}.
+$$
+
+Our abstract E5-C really was incomparable. But once we restored the analytic structure of positive continuous mass-action trajectories, the temporal difference collapsed:
+
+$$
+\text{eventual common box}
+\Rightarrow
+\text{trajectory-specific all-time box}.
+$$
+
+So the substantive loss is the uniformity:
+
+$$
+\exists\varepsilon_C\,\forall x_0\in C
+$$
+
+becomes
+
+$$
+\forall x_0\in C\,\exists\varepsilon(x_0).
+$$
+
+That is exactly the kind of thing a superficial logical comparison could misdiagnose.
+
+E5-F is a source-faithful reduced composition theorem, not yet literally a theorem about every definition in OpenAI’s full MassAction.lean. We explicitly stated the dynamical properties we needed rather than deriving all of them from OpenAI’s ODE implementation.
+
+#### E5 Summary
+
+The important thing is to distinguish what SemantEq reported on the reduced E5 probes from what we ultimately proved mathematically.  For the source-shaped E5-D comparison, SemantEq itself said:
+
+$$
+\texttt{Inconclusive}
+$$
+
+with
+
+$$
+\text{ref}\to\text{cand}: \text{not proved}
+$$
+
+and
+
+$$
+\text{cand}\to\text{ref}: \text{not proved}.
+$$
+
+But that was not the final mathematical relationship.  After restoring the structure that the reduced fixture had hidden — positivity, continuity, finite species, compactness, and forward uniqueness — E5-F gave us a clean Lean proof of:
+
+$$
+\boxed{\text{reference}\to\text{candidate}}
+$$
+
+So SemantEq missed that implication in the reduced comparison.
+
+The reverse direction is different. The candidate only gives an \(x_0\)-dependent bound:
+
+$$
+\forall x_0\,\exists \varepsilon(x_0),
+$$
+
+while the reference claims classwise uniformity:
+
+$$
+\exists\varepsilon_C\,\forall x_0\in C.
+$$
+
+Our E5-A separation witness proved that the pointwise form does not logically recover the uniform form in general.
+
+So the best current summary is:
+
+$$
+\boxed{\text{ref}\to\text{cand}}
+$$
+
+is formally established by E5-F, while
+
+$$
+\boxed{\text{cand}\to\text{ref}}
+$$
+
+is not supported, and the controlled uniformity counterexample shows why it cannot follow merely from the comparator's pointwise-bound structure.
+
+One precision point: we have not constructed an actual mass-action reaction network satisfying OpenAI's comparator theorem while violating permanence. So we  shouldn't yet write the strongest possible source-level claim
+
+$$
+\text{cand}\nrightarrow\text{ref}
+$$
+
+as a theorem specifically about genuine mass-action systems. What we have proved is that the logical information present in the candidate is insufficient to recover classwise uniformity.
+
+So E5 summary is:
+
+$$
+\boxed{
+\text{SemantEq D: neither direction discovered}
+}
+$$
+
+but our audit subsequently found
+
+$$
+\boxed{
+\text{Reference}\Rightarrow\text{Candidate}
+}
+$$
+
+and identified loss of classwise uniformity as the remaining reason the candidate should be regarded as weaker.
+
+
+| Probe | Finding |
+|---|---|
+| E5-A | Loss of classwise uniformity is a genuine weakening |
+| E5-B | Abstract all-time is stronger than eventual; SemantEq missed the easy implication |
+| E5-C | With dynamics abstracted away, combined statements are genuinely incomparable |
+| E5-D | Source-shaped but opaque dynamics still look incomparable |
+| E5-D1/D2 | Positivity + continuity + finite species eliminate the temporal conflict |
+| E5-E1/E2 | Compact positive absorbing set gives a common reciprocal concentration box |
+| E5-F | Full reduced composition proves headline-style permanence ⇒ comparator-style bound |
+
+
 
 ---
 
