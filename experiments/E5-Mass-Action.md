@@ -1,8 +1,6 @@
 
 ## E5. Mass-action permanence: quantifier order
 
-**Status:** Planned.
-
 **Prior expectation:** The class-uniform statement is stronger than the trajectory-dependent statement.
 
 ### References
@@ -14,6 +12,16 @@
 - [arXiv review](https://arxiv.org/abs/1010.3050)
 - [Wikipedia Chemical reaction network theory](https://en.wikipedia.org/wiki/Chemical_reaction_network_theory)
 - [A blog on reaction network theory](https://johncarlosbaez.wordpress.com/2011/11/12/network-theory-part-17/)
+
+### Background
+
+This is about whether a certain kind of reaction network can make a chemical species vanish or let its concentration grow without bound over time.
+
+In a mass-action model, a reaction such as A+B→C proceeds at a rate proportional to the product of the reactant concentrations, k[A][B]. A network is weakly reversible if every reaction lies on a directed cycle in the reaction graph: starting from its product complex, there’s a path back to its reactant complex.
+
+The conjectures ask whether, for any finite weakly reversible network with positive rate constants and positive starting concentrations, the resulting concentrations stay bounded and stay away from zero. The linked OpenAI note says its Lean formalization proves those claims: there’s an ε>0 such that every concentration stays between ε and 1/ε for all future time. That ε can depend on the network, rate constants, and initial concentrations.
+
+This is not a claim that the system settles down to equilibrium; concentrations could keep varying while staying within those bounds. And because the bounds can depend on the starting concentrations, it’s weaker than a uniform guarantee shared by every starting point in a whole stoichiometric class.
 
 
 ### Experiment
@@ -561,4 +569,123 @@ and identified loss of classwise uniformity as the remaining reason the candidat
 | E5-E1/E2 | Compact positive absorbing set gives a common reciprocal concentration box |
 | E5-F | Full reduced composition proves headline-style permanence ⇒ comparator-style bound |
 
+### E5-G — Provenance and formalization-target alignment
 
+#### Audit question
+
+Does the loss of classwise uniformity observed in the Lean comparator represent an incorrect formalization of the theorem it was intended to formalize, or does the comparator target a different result within OpenAI result family 149?
+
+#### Source revision
+
+OpenAI math repository:
+
+`fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb`
+
+Relevant sources:
+
+- `overview.tex`, result family 149
+- `lean/docs/149.md`
+- `lean/ComparatorChallenges/MassAction.lean`
+- `preprints/Boundedness-and-persistence-of-weakly-reversible-mass-action-systems-September-25-2026/`
+- `preprints/Uniform-Permanence-in-Weakly-Reversible-Mass-Action-Systems-October-5-2026/`
+
+#### Provenance result
+
+The source record distinguishes two related results.
+
+The family-level catalogue entry, **“Permanence for weakly reversible reaction networks,”** states the stronger classwise result. For each positive stoichiometric compatibility class, including an unbounded class, there is one common compact convex forward-invariant absorbing set. Consequently, all positive trajectories in the class eventually share positive lower and finite upper concentration bounds.
+
+The same catalogue entry links two manuscripts:
+
+1. *Boundedness and persistence of weakly reversible mass-action systems* (September 25, 2026).
+2. *Uniform Permanence in Weakly Reversible Mass-Action Systems* (October 5, 2026).
+
+The Lean scope document `lean/docs/149.md`, however, identifies the formalized result specifically with the earlier *Boundedness and persistence* paper. Its conclusion is pointwise in the initial state: for every strictly positive initial state, there exists an $\varepsilon\in(0,1)$ bounding every species concentration of every global forward solution between $\varepsilon$ and $\varepsilon^{-1}$ for all nonnegative times. The scope document explicitly states that this bound may depend on the network, rates, and initial state.
+
+The later uniform-permanence proof strengthens this structure. For a fixed positive stoichiometric class $P$, it constructs a common absorbing set $K_P$. Its class-dependent scale $\varepsilon_P$ is fixed independently of the choice of initial point $x^0\in P$; only the finite entry time may depend on $x^0$.
+
+Thus the relevant quantifier distinction is genuinely present in the source provenance:
+
+$$
+\text{earlier pointwise result:}
+\qquad
+\forall x^0\in P\;\exists\varepsilon(x^0),
+$$
+
+whereas the later permanence result establishes
+
+$$
+\text{later uniform result:}
+\qquad
+\exists\varepsilon_P\;\forall x^0\in P,
+$$
+
+with trajectory-dependent entry time allowed.
+
+#### Relation to E5-A–F
+
+The provenance audit agrees with the formal experiments.
+
+**E5-A** showed independently that
+
+$$
+\exists\varepsilon\;\forall x^0
+\quad\Longrightarrow\quad
+\forall x^0\;\exists\varepsilon,
+$$
+
+while the reverse implication fails in general. Thus the pointwise quantifier structure does not itself encode classwise uniformity.
+
+**E5-B–D** initially exposed an apparent competing temporal distinction between eventual bounds and bounds valid from time zero. When trajectory regularity was left abstract, the combined reduced propositions could even become logically incomparable.
+
+**E5-D1/D2** showed why that abstraction was misleading for genuine positive finite-dimensional dynamics: positivity and continuity allow an eventual reciprocal box to be extended backward across the compact finite transient to a trajectory-specific reciprocal box valid from time zero.
+
+**E5-E1/E2** established that a compact subset of the positive orthant lies in a common reciprocal concentration box.
+
+Finally, **E5-F** composed these facts, under explicit forward-continuity, positivity, uniqueness, and compatibility-class assumptions, to prove
+
+$$
+\text{headline-style classwise permanence}
+\Longrightarrow
+\text{comparator-style pointwise all-time bounds}.
+$$
+
+The remaining fidelity difference is therefore the loss of classwise uniformity, not the superficial eventual-versus-all-time distinction.
+
+#### Interpretation
+
+The Lean comparator should **not** be described as an incorrect formalization of the theorem it explicitly targets. Its own scope documentation identifies the earlier boundedness-and-persistence result, and its initial-state-dependent bound is consistent with that target.
+
+Relative to the **family-level headline**, however, the Lean artifact does not formalize the stronger classwise-uniform permanence conclusion supplied by the later companion result.
+
+The most precise classification is therefore:
+
+**formalization-target / provenance mismatch**
+
+rather than:
+
+**incorrect formalization**.
+
+Schematically,
+
+$$
+\text{family headline}
+=
+\text{later uniform-permanence result},
+$$
+
+while
+
+$$
+\text{Lean comparator}
+=
+\text{earlier pointwise boundedness-and-persistence result}.
+$$
+
+The comparator is therefore a faithful formalization of a genuine weaker companion result, while being weaker than the stronger result used to characterize the family as a whole.
+
+#### E5-G status
+
+**Confirmed provenance / target-alignment distinction.**
+
+No SemantEq classification is assigned to E5-G because this subexperiment audits source selection and theorem provenance rather than running a proposition-equivalence comparison.
