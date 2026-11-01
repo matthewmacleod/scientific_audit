@@ -101,6 +101,42 @@ E5-F — Full-source stress test. Only after we know all the pieces separately d
 
 #### E5-A
 
+Compared:
+
+$$
+\text{Uniform reference:}\qquad
+\exists \varepsilon\;
+\forall x_0>0,\;
+P(\varepsilon,x_0)
+$$
+
+against:
+
+$$
+\text{Pointwise candidate:}\qquad
+\forall x_0>0\;
+\exists \varepsilon,\;
+P(\varepsilon,x_0).
+$$
+
+SemantEq founds the expected one-way implication:
+
+$$
+\exists\varepsilon\,\forall x_0
+\Rightarrow
+\forall x_0\,\exists\varepsilon.
+$$
+
+E5-A establishes:
+
+$$
+\boxed{
+\forall x_0\,\exists\varepsilon(x_0)
+\not\Rightarrow
+\exists\varepsilon\,\forall x_0
+}
+$$
+
 ```
 lake exe semanteq --strict --raw --timeout 0 \
   ../src/mass_action_uniform_ref.lean \
@@ -689,3 +725,275 @@ The comparator is therefore a faithful formalization of a genuine weaker compani
 **Confirmed provenance / target-alignment distinction.**
 
 No SemantEq classification is assigned to E5-G because this subexperiment audits source selection and theorem provenance rather than running a proposition-equivalence comparison.
+
+### Summary
+
+The mismatch we found is between that pointwise result and the stronger family-level headline / later uniform-permanence result.
+
+OpenAI's Lean note says, essentially:
+
+$$
+\forall x_0>0,\quad \exists \varepsilon=\varepsilon(N,\kappa,x_0)>0
+$$
+
+such that, for all future time and all species,
+
+$$
+\varepsilon\le x_i(t)\le \frac1\varepsilon.
+$$
+
+That is exactly the pointwise structure we audited:
+
+$$
+\boxed{\forall x_0\;\exists\varepsilon(x_0)}.
+$$
+
+The stronger uniform-permanence claim says that for an entire positive stoichiometric compatibility class $(C)$, there is one common absorbing set / one classwise scale fixed independently of the particular initial concentration:
+
+$$
+\boxed{\exists\varepsilon_C\;\forall x_0\in C}
+$$
+
+with the entry time allowed to depend on \(x_0\).
+
+So the difference is:
+
+$$
+\forall x_0\in C\;\exists\varepsilon(x_0)
+$$
+
+versus
+
+$$
+\exists\varepsilon_C\;\forall x_0\in C.
+$$
+
+And E5-A proved that this is a real loss of logical information: the first quantifier pattern does not in general recover the second.  E5-A proved the quantifier loss itself by the following:
+
+We compared:
+
+$$
+\text{Uniform reference:}\qquad
+\exists \varepsilon\;
+\forall x_0>0,\;
+P(\varepsilon,x_0)
+\]
+
+against:
+
+$$
+\text{Pointwise candidate:}\qquad
+\forall x_0>0\;
+\exists \varepsilon,\;
+P(\varepsilon,x_0).
+$$
+
+SemantEq found the expected one-way implication:
+
+$$
+\exists\varepsilon\,\forall x_0
+\Rightarrow
+\forall x_0\,\exists\varepsilon.
+$$
+
+Its proof literally took the single witness $(\varepsilon)$ from the reference and reused it for each $(x_0)$.
+
+Then we independently showed the reverse fails with the concrete model
+$$
+P(\varepsilon,x_0)\equiv \varepsilon\le x_0.
+$$
+For every positive \(x_0\), you can choose, say,
+
+$$
+\varepsilon=\min(x_0/2,1/2),
+$$
+
+so:
+
+$$
+\forall x_0>0\;\exists\varepsilon>0,\quad
+\varepsilon\le x_0
+$$
+
+is true.
+
+But no single positive $(\varepsilon)$ can satisfy
+
+$$
+\forall x_0>0,\quad \varepsilon\le x_0,
+$$
+
+because given any $(\varepsilon>0)$, choose
+
+$$
+x_0=\varepsilon/2.
+$$
+
+Then $(\varepsilon\le x_0)$ is false.
+
+So E5-A established:
+
+$$
+\boxed{
+\forall x_0\,\exists\varepsilon(x_0)
+\not\Rightarrow
+\exists\varepsilon\,\forall x_0
+}
+$$
+
+This is what we mean by real loss of logical information.
+
+
+The subtle thing we learned later was that “all future time” is not the mismatch we initially thought it might be. Once we restored positivity, continuity, finite species, compactness, etc., D1/D2/E/F showed that eventual entrance into a common compact positive region can be converted into an $(x_0)$-dependent box valid from $(t=0)$. So:
+
+$$
+\text{eventual uniform permanence}
+\Longrightarrow
+\text{pointwise all-time bound}.
+$$
+
+Thus the final diagnosis is very clean:
+
+$$
+\boxed{\text{the missing strength is classwise uniformity}.}
+$$
+
+
+This was done by the following: E5-B/C made it look like there were two opposing strength changes:
+
+Reference:
+
+$$
+\text{one uniform }\varepsilon
+\quad+\quad
+\text{eventual in time}
+$$
+
+Candidate:
+
+$$
+\text{pointwise }\varepsilon(x_0)
+\quad+\quad
+\text{all time}.
+$$
+
+Abstractly, those can be incomparable.
+
+But then we restored the actual mathematical structure.
+D1/D2: eventual can become all-time
+For a positive continuous trajectory, if after some \(T\),
+
+$$
+\varepsilon_C
+\le x_i(t)\le
+\varepsilon_C^{-1},
+$$
+
+then on the finite transient interval $([0,T])$, continuity plus positivity gives finite maxima and strictly positive minima.
+
+So there exists some trajectory-specific $(\delta(x_0)>0)$ such that:
+
+$$
+\delta(x_0)
+\le x_i(t)\le
+\delta(x_0)^{-1}
+$$
+
+for all $(t\ge0)$.
+
+Thus:
+
+$$
+\boxed{
+\text{eventual common box}
+\Rightarrow
+\text{trajectory-specific all-time box}
+}
+$$
+
+once the genuine dynamics are restored.
+E1/E2: compact absorbing set gives a common box
+We then showed that if the headline gives a compact absorbing set $(K)$ inside the positive orthant, then compactness + strict positivity imply:
+
+$$
+\exists\varepsilon_C>0
+$$
+
+such that for every state $(x\in K)$ and every species $(i)$,
+
+$$
+\varepsilon_C
+\le x_i\le
+\varepsilon_C^{-1}.
+$$
+
+So the geometric headline really does give a uniform classwise reciprocal box.
+F: compose everything
+Finally, E5-F composed those pieces and proved:
+
+$$
+\boxed{
+\text{headline-style classwise permanence}
+\Rightarrow
+\text{OpenAI-style pointwise all-time bound}
+}
+$$
+
+under explicit forward continuity, positivity, uniqueness, and class-membership assumptions.
+
+That removed the temporal difference as the substantive issue.
+
+So what remains?
+
+The candidate still says:
+
+$$
+\forall x_0\in C\;
+\exists\varepsilon(x_0).
+$$
+
+The reference says:
+
+$$
+\exists\varepsilon_C\;
+\forall x_0\in C.
+$$
+
+And E5-A already showed that the first form does not recover the second merely from its logical content.
+
+So the final diagnosis is:
+
+$$
+\boxed{\text{the missing strength is classwise uniformity}}
+$$
+
+not “eventual vs all-time.”
+
+A compact way to summarize E5 is:
+
+$$
+\text{reference}
+\Rightarrow
+\text{candidate}
+$$
+
+because the reference contains enough geometry and dynamics to recover the candidate;
+
+but the candidate only retains
+
+$$
+\forall x_0\,\exists\varepsilon(x_0),
+$$
+
+and that does not encode the stronger
+
+$$
+\exists\varepsilon_C\,\forall x_0.
+$$
+
+That is the core of what E5 established.
+
+And provenance matters:
+- Lean + OpenAI's Lean note: faithfully describe the earlier pointwise boundedness/persistence result.
+- Family headline/later paper: assert the stronger uniform-permanence result.
+- Mismatch: which result is being used as the family-level target versus which one was formalized.
