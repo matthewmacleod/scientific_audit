@@ -1,6 +1,5 @@
 # E9. Heilbronn triangle problem: eventual versus subsequential asymptotics
 
-
 **Prior expectation:** The eventual statement is stronger than an unbounded-subsequence construction.
 
 ## References
