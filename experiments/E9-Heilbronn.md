@@ -271,3 +271,12 @@ $$
 The source is explicit about all three pieces: Tendsto n atTop atTop, the per-\(j\) configuration, and ¬ eventualAlmostUpperBound (heilbronnExponent / 2).
 
 
+### Summary
+
+- E9-A: provenance/scope mismatch identified.
+- E9-B: “all sufficiently large sizes” strictly stronger than “unbounded subsequence”; SemantEq Inconclusive, Lean bridge + counterexample clean.
+- E9-C: subsequence power improvement refutes the weaker eventual $(n^{-2+\delta/2})$ upper bound; SemantEq Inconclusive, independent asymptotic bridge clean.
+- E9-D: exact pinned OpenAI comparator confirms both source claims.
+That’s another very solid case, and importantly it separates structural quantifier weakening from substantive asymptotic reasoning within the same scientific result.
+
+
