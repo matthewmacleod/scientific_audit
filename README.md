@@ -5,7 +5,7 @@ We test various results from [Working with academic communities to build scienti
 
 This repo audits whether formalized scientific results support the human-facing claims associated with them. We distinguish semantic equivalence, one-way entailment, and weaker or stronger formalizations using SemantEq-Eval and SemantEq-ProofAudit.
 
-We use the ![SemantEq](https://arxiv.org/abs/2610.32919) approach to determining these probes.
+We use the [SemantEq](https://arxiv.org/abs/2610.32919) approach to determining these probes.
 
 ## Experiments
 
