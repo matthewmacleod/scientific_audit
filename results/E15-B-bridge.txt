@@ -1,0 +1,11 @@
+'ShelahCHScopeBridge.equivalent' depends on axioms: [AEC,
+ CH,
+ Categorical,
+ CountableLanguage,
+ HasLS0,
+ IsAEC,
+ Language,
+ TwoModels,
+ endpoint,
+ hanf,
+ tailThreshold]

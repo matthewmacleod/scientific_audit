@@ -69,6 +69,9 @@ The audit experiments are documented individually here:
 - [E12 — Hyperbolicity Cones](./E12-Hyperbolicity-Cones.md)
 - [E13 — Riesz BPLI](./E13-Riesz-BPLI.md)
 - [E14 — ETH](./E14-ETH.md)
+- [E15 — Shelah](./E15-Shelah.md)
+- [E16 — Single Fold](./E16-SingleFold.md)
+- [E17 — Weak Normalization ](./E17-Normalization.md)
 
 ## Results
 
