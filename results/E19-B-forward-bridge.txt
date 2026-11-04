@@ -1,0 +1,5 @@
+../src/reconstruction_threshold_bridge.lean:18:2: warning: Try this: intro hRef x hx
+'ReconstructionThresholdBridge.ref_implies_candidate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Reconstructs]

@@ -1,0 +1,5 @@
+'ReconstructionThresholdCountermodel.candidate_holds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ReconstructionThresholdCountermodel.ref_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ReconstructionThresholdCountermodel.candidate_does_not_imply_ref' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
