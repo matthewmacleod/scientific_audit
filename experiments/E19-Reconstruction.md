@@ -27,9 +27,9 @@ paper and three-state comparator targets.
 For the symmetric three-state broadcast model, the current family claim
 identifies the exact Kesten-Stigum reconstruction threshold:
 
-\[
+$$
 d\lambda^2 > 1.
-\]
+$$
 
 Above the threshold, reconstruction occurs.
 
@@ -42,17 +42,17 @@ three-community stochastic-block-model consequence.
 The pinned Lean scope is narrower. It formalizes only the supercritical
 three-state direction:
 
-\[
+$$
 d\lambda^2 > 1
 \Rightarrow
 Reconstructs.
-\]
+$$
 
 For regular trees the corresponding condition is
 
-\[
+$$
 b\lambda^2 > 1.
-\]
+$$
 
 The selected statements do not include:
 
@@ -131,9 +131,11 @@ cand ⇒ ref: not proved
 The SemantEq result alone does not establish either non-entailment.
 Independent forward bridge
 An independent Lean bridge proved:
-\[
+
+$$
 R \Rightarrow C.
-\]
+$$
+
 The proof is simply projection of the supercritical conjunct from the
 exact-threshold reference.
 
@@ -145,20 +147,26 @@ and no sorryAx.
 Thus SemantEq's failure on ref ⇒ cand is a proof-search false negative.
 Countermodel to the reverse implication
 To test the reverse direction, define:
-\[
+
+$$
 Reconstructs(x):=\mathrm{True}
-\]
+$$
+
 for every real \(x\).
 
 Then the candidate statement holds trivially:
-\[
+
+$$
 x>1\Rightarrow Reconstructs(x).
-\]
-But the reference fails at \(x=1\), because exact-threshold behavior also
+$$
+
+But the reference fails at $(x=1)$, because exact-threshold behavior also
 requires:
-\[
+
+$$
 x\le1\Rightarrow\neg Reconstructs(x).
-\]
+$$
+
 Lean kernel-checked:
 - ReconstructionThresholdCountermodel.candidate_holds
 - ReconstructionThresholdCountermodel.ref_fails
@@ -169,13 +177,17 @@ with axioms:
 and no sorryAx.
 
 Therefore:
-\[
+
+$$
 \boxed{R\Rightarrow C}
-\]
+$$
+
 but:
-\[
+
+$$
 \boxed{C\nRightarrow R}.
-\]
+$$
+
 The selected supercritical statement is strictly weaker than the exact
 threshold claim.
 
@@ -254,15 +266,15 @@ direction.
 
 E19-B independently established:
 
-\[
+$$
 R\Rightarrow C
-\]
+$$
 
 but:
 
-\[
+$$
 C\nRightarrow R.
-\]
+$$
 
 The forward implication was kernel-proved, while the reverse was refuted
 by an explicit kernel-checked countermodel.
@@ -289,7 +301,7 @@ weaker supercritical candidate statement.
 
 Therefore:
 
-\[
+$$
 \boxed{
 \text{current exact-threshold family claim}
 \;\Longrightarrow_{\text{strict}}\;
@@ -297,7 +309,7 @@ Therefore:
 \;\Longleftarrow\;
 \text{actual selected implementation}
 }
-\]
+$$
 
 **Classifications:**
 
