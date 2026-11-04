@@ -1,0 +1,5 @@
+'SATVarianceStrengthCountermodel.candidate_holds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SATVarianceStrengthCountermodel.ref_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SATVarianceStrengthCountermodel.candidate_does_not_imply_ref' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

@@ -1,0 +1,6 @@
+'SATVarianceStrengthBridge.ref_implies_candidate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ LogFactor,
+ Variance,
+ logFactor_ge_one]
