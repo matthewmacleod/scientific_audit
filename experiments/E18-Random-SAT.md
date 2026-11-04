@@ -291,3 +291,128 @@ Artifacts:
 - results/E18-B.json
 - results/E18-B-forward-bridge.txt
 - results/E18-B-countermodel.txt
+
+
+### E18-C — actual OpenAI implementation
+
+We checked the selected implementation directly:
+
+`OAI.RandomKSAT.variance_main`
+
+from:
+
+`OAI/Probability/SATVariance/Main.lean`.
+
+Specializing the theorem to $(k=3)$, an independent bridge extracted the
+uncapped hitting-time bounds relevant to the audit.
+
+The actual theorem implies:
+
+$$
+\exists C\ge0,\;
+\forall n\ge3,\;
+Var(H_n)\le Cn\,\ell(3,n),
+$$
+
+and:
+
+$$
+\exists c>0,\exists N,\;
+\forall n\ge N,\;n\ge3,\;
+cn\le Var(H_n).
+$$
+
+A second bridge unfolded the $(k=3)$ definition of `ell` and obtained the
+explicit upper bound
+
+$$
+Var(H_n)\le Cn\log(en).
+$$
+
+Lean kernel-checked:
+
+- `OAI.RandomKSAT.variance_main`
+- `ScientificAudit.E18C.actual_implementation_implies_selected_k3`
+- `ScientificAudit.E18C.actual_implementation_implies_explicit_k3`
+
+All three depend only on:
+
+```text
+[propext, Classical.choice, Quot.sound]
+```
+
+No sorryAx occurs.
+
+Thus the actual OpenAI implementation faithfully realizes the weaker
+selected $(k=3)$ variance statement.
+E18 overall result
+The current Result 235 family claims:
+
+$$
+Var(H_n)=\Theta(n)
+$$
+
+for $(k=3)$.
+
+The selected Lean target and actual implementation establish only:
+
+$$
+Var(H_n)=\Omega(n)
+$$
+
+together with:
+
+$$
+Var(H_n)=O(n\log n).
+$$
+
+E18-B independently established the strict semantic relation:
+
+$$
+R\Rightarrow C
+$$
+
+but:
+$$
+C\nRightarrow R.
+$$
+
+The reverse non-entailment was demonstrated by an explicit
+kernel-checked countermodel.
+
+SemantEq returned Inconclusive in both directions. Independent analysis
+showed that these two failures had different meanings:
+- ref ⇒ cand: valid implication missed by proof search;
+- cand ⇒ ref: genuinely invalid implication.
+The actual OpenAI implementation then kernel-checked against the weaker
+candidate-strength statement.
+
+Therefore:
+
+$$
+\boxed{
+\text{current family claim}
+\;\Longrightarrow_{\text{strict}}\;
+\text{selected formal strength}
+\;\Longleftarrow\;
+\text{actual implementation}
+}
+$$
+
+Classification: QuantitativeStrengthMismatch
+
+The mismatch is localized to the later strengthening of the $(k=3)$
+family-level claim. The selected Lean theorem is internally faithful to
+the weaker variance result it formalizes.
+
+Artifacts:
+- src/sat_variance_strength_ref.lean
+- src/sat_variance_strength_candidate.lean
+- src/sat_variance_strength_bridge.lean
+- src/sat_variance_strength_countermodel.lean
+- src/sat_variance_openai_bridge.lean
+- results/E18-B.json
+- results/E18-B-forward-bridge.txt
+- results/E18-B-countermodel.txt
+- results/E18-C-openai-bridge.txt
+- evidence/e18-a/
