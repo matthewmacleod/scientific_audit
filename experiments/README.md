@@ -72,6 +72,12 @@ The audit experiments are documented individually here:
 - [E15 — Shelah](./E15-Shelah.md)
 - [E16 — Single Fold](./E16-SingleFold.md)
 - [E17 — Weak Normalization ](./E17-Normalization.md)
+- [E18 — Random SAT](./E18-Random-SAT.md)
+- [E19 — Reconstruction](./E19-Reconstruction.md)
+- [E20 — QAC Parity](./E20-QAC-Parity.md)
+
+
+See the [experiment index](experiments/README.md) for current results, status, and cross-experiment notes.
 
 ## Results
 

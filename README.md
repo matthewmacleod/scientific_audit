@@ -25,5 +25,12 @@ The audit experiments are documented individually in [`experiments/`](experiment
 - [E12 — Hyperbolicity Cones](experiments/E12-Hyperbolicity-Cones.md)
 - [E13 — Riesz BPLI](experiments/E13-Riesz-BPLI.md)
 - [E14 — ETH](experiments/E14-ETH.md)
+- [E15 — Shelah](experiments/E15-Shelah.md)
+- [E16 — Single Fold](experiments/E16-SingleFold.md)
+- [E17 — Normalization](experiments/E17-Normalization.md)
+- [E18 — Random SAT](experiments/E18-Random-SAT.md)
+- [E19 — Reconstruction](experiments/E19-Reconstruction.md)
+- [E20 — QAC Parity](experiments/E20-QAC-Parity.md)
+
 
 See the [experiment index](experiments/README.md) for current results, status, and cross-experiment notes.
