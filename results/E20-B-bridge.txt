@@ -1,0 +1,21 @@
+'QACParityBridge.ref_implies_candidate' depends on axioms: [propext,
+ Classical.choice,
+ Admissible,
+ Circuit,
+ Input,
+ Success,
+ Quot.sound]
+'QACParityBridge.candidate_implies_ref' depends on axioms: [propext,
+ Classical.choice,
+ Admissible,
+ Circuit,
+ Input,
+ Success,
+ Quot.sound]
+'QACParityBridge.equivalent' depends on axioms: [propext,
+ Classical.choice,
+ Admissible,
+ Circuit,
+ Input,
+ Success,
+ Quot.sound]
